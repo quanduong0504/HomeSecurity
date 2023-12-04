@@ -11,6 +11,12 @@ import com.trust.home.security.base.BaseCustomView;
 import com.trust.home.security.databinding.LayoutUserToolbarBinding;
 
 public class UserToolBar extends BaseCustomView<LayoutUserToolbarBinding> {
+    private ToolBarListener listener;
+
+    public void setListener(ToolBarListener listener) {
+        this.listener = listener;
+    }
+
     public UserToolBar(Context context, @Nullable AttributeSet attrs) {
         super(context, attrs);
     }
@@ -27,6 +33,14 @@ public class UserToolBar extends BaseCustomView<LayoutUserToolbarBinding> {
 
     @Override
     protected void initActions() {
+        mBinding.imAvatar.setOnClickListener(v -> {
+            if(listener != null) {
+                listener.onOpenProfile();
+            }
+        });
+    }
 
+    public interface ToolBarListener {
+        void onOpenProfile();
     }
 }

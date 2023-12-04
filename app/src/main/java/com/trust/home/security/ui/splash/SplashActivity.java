@@ -11,6 +11,8 @@ import com.trust.home.security.base.BaseActivity;
 import com.trust.home.security.base.BasePresenter;
 import com.trust.home.security.base.BaseView;
 import com.trust.home.security.ui.login.LoginActivity;
+import com.trust.home.security.ui.loginWithFaceId.LoginWithFaceIdActivity;
+import com.trust.home.security.utils.AppPrefsManager;
 
 public class SplashActivity extends BaseActivity {
 
@@ -37,7 +39,9 @@ public class SplashActivity extends BaseActivity {
     @Override
     protected void setupSplashScreen(SplashScreen splash) {
         splash.setOnExitAnimationListener(splashScreenViewProvider -> {
-            pushActivityAndFinish(LoginActivity.class);
+            if(AppPrefsManager.getInstance().getUser() != null) {
+                pushActivityAndFinish(LoginWithFaceIdActivity.class);
+            } else pushActivityAndFinish(LoginActivity.class);
         });
     }
 

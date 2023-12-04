@@ -48,6 +48,7 @@
             android:layout_marginTop="@dimen/_18sdp"/>
 
         <androidx.appcompat.widget.AppCompatEditText
+            android:id="@+id/edtUserName"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/_2sdp"
@@ -69,6 +70,7 @@
             android:layout_marginTop="@dimen/_12sdp"/>
 
         <com.trust.home.security.widgets.InputPassword
+            android:id="@+id/edtPassword"
             android:layout_marginTop="@dimen/_2sdp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"/>

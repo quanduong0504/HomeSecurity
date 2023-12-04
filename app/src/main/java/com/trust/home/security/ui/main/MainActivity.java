@@ -5,7 +5,6 @@ import android.view.LayoutInflater;
 import com.trust.home.security.base.BaseActivity;
 import com.trust.home.security.base.BasePagerAdapter;
 import com.trust.home.security.databinding.ActivityMainBinding;
-import com.trust.home.security.helpers.BundleFactory;
 import com.trust.home.security.ui.home.HomeFragment;
 import com.trust.home.security.ui.notification.NotificationFragment;
 

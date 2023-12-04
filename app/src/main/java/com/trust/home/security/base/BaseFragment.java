@@ -1,5 +1,7 @@
 package com.trust.home.security.base;
 
+import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -74,6 +76,15 @@ public abstract class BaseFragment<BD extends ViewBinding, P extends BasePresent
     protected void pushFragment(Fragment fragment) {
         baseActivity.pushFragment(fragment);
     }
+
+    protected <T extends Activity> void pushActivity(Class<T> clz) {
+        baseActivity.pushActivity(clz);
+    }
+
+    protected <T extends Activity> void pushActivityAndFinish(Class<T> clz) {
+        baseActivity.pushActivityAndFinish(clz);
+    }
+
     protected void showDialogMessage(String message, DialogMessage.DialogMessageListener listener) {
         baseActivity.showDialogMessage(message, listener);
     }

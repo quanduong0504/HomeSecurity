@@ -1,14 +1,28 @@
 package com.trust.home.security.ui.login;
 
+import android.text.SpannableString;
+import android.text.Spanned;
+import android.text.TextPaint;
+import android.text.method.LinkMovementMethod;
+import android.text.style.ClickableSpan;
 import android.view.LayoutInflater;
+import android.view.View;
+import android.widget.Toast;
 
-import androidx.viewbinding.ViewBinding;
+import androidx.annotation.NonNull;
 
 import com.trust.home.security.R;
 import com.trust.home.security.base.BaseActivity;
 import com.trust.home.security.databinding.ActivityLoginBinding;
-import com.trust.home.security.ui.main.MainActivity;
+import com.trust.home.security.helpers.events.LoginFaceSuccess;
+import com.trust.home.security.ui.loginWithFaceId.LoginWithFaceIdActivity;
 import com.trust.home.security.ui.register.RegisterFragment;
+import com.trust.home.security.ui.registerFaceId.RegisterFaceIdFragment;
+import com.trust.home.security.utils.PermissionUtils;
+import com.trust.home.security.utils.StringUtils;
+
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 
 public class LoginActivity extends BaseActivity<ActivityLoginBinding, LoginPresenter, LoginView> implements LoginView {
     @Override
@@ -28,7 +42,10 @@ public class LoginActivity extends BaseActivity<ActivityLoginBinding, LoginPrese
 
     @Override
     protected void initViews() {
-
+        registerEvents();
+        mBinding.tvRegister.setMovementMethod(LinkMovementMethod.getInstance());
+        mBinding.tvRegister.setText(getRegisterSpan());
+        PermissionUtils.requestPermission(this);
     }
 
     @Override
@@ -37,16 +54,57 @@ public class LoginActivity extends BaseActivity<ActivityLoginBinding, LoginPrese
             String username = mBinding.edtUsername.getText().toString().trim();
             String password = mBinding.inputPassword.getPassword();
 
-            mPresenter.login(username, password);
-        });
-
-        mBinding.tvRegister.setOnClickListener(v -> {
-            pushFragment(RegisterFragment.newInstance(RegisterFragment.class));
+            if(StringUtils.valid(username) && StringUtils.valid(password)) {
+                mPresenter.login(username, password);
+            } else Toast.makeText(this, "You need to enter enough information", Toast.LENGTH_SHORT).show();
         });
     }
 
     @Override
+    public void goToRegisterFace() {
+        pushFragment(RegisterFaceIdFragment.newInstance(RegisterFaceIdFragment.class));
+    }
+
+    @Override
+    public void onLoginFailure(String message) {
+        Toast.makeText(this, message, Toast.LENGTH_LONG).show();
+    }
+
+    private SpannableString getRegisterSpan() {
+        String fullText = getString(R.string.login_create_account);
+        String createAccount = "Create a account";
+        SpannableString sp = new SpannableString(fullText);
+        int start = fullText.indexOf(createAccount);
+        int end = start + createAccount.length();
+
+        ClickableSpan clickableSpan = new ClickableSpan() {
+            @Override
+            public void onClick(@NonNull View widget) {
+                pushFragment(RegisterFragment.newInstance(RegisterFragment.class));
+            }
+
+            @Override
+            public void updateDrawState(@NonNull TextPaint ds) {
+                ds.setUnderlineText(true);
+            }
+        };
+        sp.setSpan(clickableSpan, start, end, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+        return sp;
+    }
+
+    @Override
     public void onLoginSuccess() {
-        pushActivityAndFinish(MainActivity.class);
+        pushActivity(LoginWithFaceIdActivity.class);
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onRecognizeSuccess(LoginFaceSuccess loginFaceSuccess) {
+        finish();
+    }
+
+    @Override
+    protected void onDestroy() {
+        unregisterEvents();
+        super.onDestroy();
     }
 }

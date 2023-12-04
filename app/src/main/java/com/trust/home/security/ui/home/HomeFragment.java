@@ -6,6 +6,8 @@ import android.view.ViewGroup;
 import com.trust.home.security.base.BaseFragment;
 import com.trust.home.security.databinding.FragmentHomeBinding;
 import com.trust.home.security.network.data.response.HomeData;
+import com.trust.home.security.ui.profile.ProfileFragment;
+import com.trust.home.security.widgets.UserToolBar;
 
 public class HomeFragment extends BaseFragment<FragmentHomeBinding, HomePresenter, HomeView> implements HomeView {
     private HomeAdapter mAdapter;
@@ -37,6 +39,11 @@ public class HomeFragment extends BaseFragment<FragmentHomeBinding, HomePresente
 
     @Override
     protected void initActions() {
-
+        mBinding.toolbar.setListener(new UserToolBar.ToolBarListener() {
+            @Override
+            public void onOpenProfile() {
+                pushFragment(ProfileFragment.newInstance(ProfileFragment.class));
+            }
+        });
     }
 }

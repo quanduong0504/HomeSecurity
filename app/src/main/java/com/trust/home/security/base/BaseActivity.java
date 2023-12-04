@@ -21,6 +21,8 @@ import com.trust.home.security.R;
 import com.trust.home.security.ui.splash.SplashActivity;
 import com.trust.home.security.widgets.DialogMessage;
 
+import org.greenrobot.eventbus.EventBus;
+
 public abstract class BaseActivity<BD extends ViewBinding, P extends BasePresenter<V>, V extends BaseView> extends AppCompatActivity implements BaseView {
     protected abstract BD binding(LayoutInflater inflater);
     protected abstract P getPresenter();
@@ -134,6 +136,18 @@ public abstract class BaseActivity<BD extends ViewBinding, P extends BasePresent
             );
         } catch (Exception e) {
           e.printStackTrace();
+        }
+    }
+
+    protected void registerEvents() {
+        if(!EventBus.getDefault().isRegistered(this)) {
+            EventBus.getDefault().register(this);
+        }
+    }
+
+    protected void unregisterEvents() {
+        if(EventBus.getDefault().isRegistered(this)) {
+            EventBus.getDefault().unregister(this);
         }
     }
 }

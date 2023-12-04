@@ -11,7 +11,7 @@ import com.trust.home.security.databinding.FragmentNotificationBinding;
 import com.trust.home.security.network.data.response.Notification;
 
 public class NotificationFragment extends BaseFragment<FragmentNotificationBinding, NotificationPresenter, NotificationView> implements NotificationView {
-    private NotificationAdapter mAdapter;
+    private final NotificationAdapter mAdapter = new NotificationAdapter();
 
     @Override
     protected FragmentNotificationBinding binding(LayoutInflater inflater, ViewGroup container) {
@@ -25,7 +25,6 @@ public class NotificationFragment extends BaseFragment<FragmentNotificationBindi
 
     @Override
     protected void initViews() {
-        mAdapter = new NotificationAdapter();
         mAdapter.setData(
                 new Notification("Stay Home is On", "10:15:11 AM"),
                 new Notification("Arm is OFF", "11:15:11 AM"),

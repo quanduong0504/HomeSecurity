@@ -1,12 +1,19 @@
 package com.trust.home.security.ui.register;
 
+import android.annotation.SuppressLint;
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
+import com.tbruyelle.rxpermissions3.RxPermissions;
 import com.trust.home.security.base.BaseFragment;
 import com.trust.home.security.databinding.FragmentRegisterBinding;
+import com.trust.home.security.ui.registerFaceId.RegisterFaceIdFragment;
+import com.trust.home.security.utils.StringUtils;
 
 public class RegisterFragment extends BaseFragment<FragmentRegisterBinding, RegisterPresenter, RegisterView> implements RegisterView {
+    private RxPermissions permissions;
+
     @Override
     protected FragmentRegisterBinding binding(LayoutInflater inflater, ViewGroup container) {
         return FragmentRegisterBinding.inflate(inflater, container, false);
@@ -18,21 +25,47 @@ public class RegisterFragment extends BaseFragment<FragmentRegisterBinding, Regi
     }
 
     @Override
-    protected RegisterView attachView() {
-        return this;
-    }
-
-    @Override
     protected void initViews() {
-
+        permissions = new RxPermissions(getActivity());
     }
 
     @Override
     protected void initActions() {
         mBinding.tvCreateAccount.setOnClickListener(v -> {
-            pushFragment(RegisterFragment.newInstance(RegisterFragment.class));
+            String userName = mBinding.edtUserName.getText().toString().trim();
+            String password = mBinding.edtPassword.getPassword();
+            if(StringUtils.valid(userName) && StringUtils.valid(password)) {
+                mPresenter.createUser(userName, password);
+            } else {
+                Toast.makeText(requireContext(), "You need to enter enough information", Toast.LENGTH_SHORT).show();
+            }
         });
 
         mBinding.appToolbar.setListener(this::onBackPressed);
+    }
+
+    @Override
+    protected RegisterView attachView() {
+        return this;
+    }
+
+    @SuppressLint("CheckResult")
+    @Override
+    public void onRegisterSuccess() {
+        hideKeyboard();
+        pushFragment(RegisterFaceIdFragment.newInstance(RegisterFaceIdFragment.class));
+//        permissions.request(Manifest.permission.CAMERA)
+//                .subscribeOn(Schedulers.io())
+//                .observeOn(AndroidSchedulers.mainThread())
+//                .subscribe(granted -> {
+//                    if(granted) {
+//                        pushFragment(RegisterRegisterFaceIdFragment.newInstance(RegisterRegisterFaceIdFragment.class));
+//                    } else Toast.makeText(requireContext(), "You need to grant Camera permission to enable the facial recognition feature.", Toast.LENGTH_LONG).show();
+//                });
+    }
+
+    @Override
+    public void onRegisterFailure(String message) {
+        Toast.makeText(requireContext(), message, Toast.LENGTH_LONG).show();
     }
 }
