@@ -13,5 +13,17 @@ data class User(
     var userName: String? = null,
 
     @ColumnInfo(name = "password")
-    var password: String? = null
+    var password: String? = null,
+
+    @ColumnInfo(name = "avatar")
+    var avatar: String? = null,
+
+    @ColumnInfo(name = "age")
+    var age: String? = null,
+
+    @ColumnInfo(name = "gender")
+    var gender: Int? = null,
+
+    @ColumnInfo(name = "full_name")
+    var fullName: String? = null
 )

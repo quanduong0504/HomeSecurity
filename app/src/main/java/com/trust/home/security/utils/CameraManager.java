@@ -17,7 +17,6 @@ import androidx.camera.lifecycle.ProcessCameraProvider;
 import androidx.camera.view.PreviewView;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentActivity;
 import androidx.lifecycle.LifecycleOwner;
 
 import com.google.common.util.concurrent.ListenableFuture;
@@ -34,7 +33,6 @@ import java.util.concurrent.Executors;
 
 public class CameraManager {
     private static CameraManager INSTANCE;
-    private WeakReference<AppCompatActivity> activity;
     private WeakReference<Fragment> fragment;
     private PreviewView previewView;
     private CameraSelector cameraSelector;
@@ -49,10 +47,6 @@ public class CameraManager {
         this.listener = listener;
     }
 
-    public void setActivity(AppCompatActivity activity) {
-        this.activity = new WeakReference<>(activity);
-    }
-
     public void setFragment(Fragment fragment) {
         this.fragment = new WeakReference<>(fragment);
     }
@@ -62,29 +56,21 @@ public class CameraManager {
     }
 
     public static synchronized CameraManager getInstance() {
-        if(INSTANCE == null) {
+        if (INSTANCE == null) {
             INSTANCE = new CameraManager();
         }
         return INSTANCE;
     }
 
-    public static synchronized void initialize(AppCompatActivity activity, PreviewView previewView) {
-        if(INSTANCE == null) {
-            INSTANCE = new CameraManager();
-            INSTANCE.setPreviewView(previewView);
-            INSTANCE.setActivity(activity);
-        }
-    }
-
     public static synchronized void initialize(Fragment fragment, PreviewView previewView) {
-        if(INSTANCE == null) {
-            INSTANCE = new CameraManager();
-            INSTANCE.setPreviewView(previewView);
-            INSTANCE.setFragment(fragment);
-        }
+        INSTANCE = new CameraManager();
+        INSTANCE.setPreviewView(previewView);
+        INSTANCE.setFragment(fragment);
     }
 
-    /** Face detection processor */
+    /**
+     * Face detection processor
+     */
     @SuppressLint("UnsafeOptInUsageError")
     private void analyze(@NonNull ImageProxy image) {
         if (image.getImage() == null) return;
@@ -103,7 +89,7 @@ public class CameraManager {
     }
 
     private void onSuccessListener(List<Face> faces, InputImage inputImage) {
-        if(faces.size() > 0) {
+        if (faces.size() > 0) {
             Face face = faces.get(0);
 
             Rect boundingBox = face.getBoundingBox();
@@ -116,10 +102,10 @@ public class CameraManager {
                     flipX
             );
 
-            if(listener != null) {
+            if (listener != null) {
                 listener.onDetectFaceSuccess(bitmap);
             }
-        } else if(listener != null) {
+        } else if (listener != null) {
             listener.onDetectFaceFailure();
         }
     }
@@ -210,29 +196,28 @@ public class CameraManager {
             flipX = false;
         }
 
-        if(cameraProvider != null) cameraProvider.unbindAll();
+        if (cameraProvider != null) cameraProvider.unbindAll();
         startCamera();
     }
 
     private Context getContext() {
-        return activity != null ? activity.get() : fragment.get().getContext();
+        return fragment.get().getContext();
     }
 
     private LifecycleOwner getLifecycleOwner() {
-        return activity != null ? activity.get() : fragment.get();
+        return fragment.get();
     }
 
-    /** Setup camera & use cases */
+    /**
+     * Setup camera & use cases
+     */
     public void startCamera() {
-//        if(ContextCompat.checkSelfPermission(this, CAMERA_PERMISSION) == PackageManager.PERMISSION_GRANTED) {
-            setupCamera();
-//        } else {
-//            getPermissions();
-//        }
+        setupCamera();
     }
 
     public interface CameraListener {
         void onDetectFaceSuccess(Bitmap bitmap);
+
         void onDetectFaceFailure();
     }
 }

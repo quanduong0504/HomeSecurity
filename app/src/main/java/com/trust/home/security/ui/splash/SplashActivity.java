@@ -2,17 +2,13 @@ package com.trust.home.security.ui.splash;
 
 import android.view.LayoutInflater;
 
-import androidx.annotation.NonNull;
 import androidx.core.splashscreen.SplashScreen;
-import androidx.core.splashscreen.SplashScreenViewProvider;
 import androidx.viewbinding.ViewBinding;
 
 import com.trust.home.security.base.BaseActivity;
 import com.trust.home.security.base.BasePresenter;
 import com.trust.home.security.base.BaseView;
 import com.trust.home.security.ui.login.LoginActivity;
-import com.trust.home.security.ui.loginWithFaceId.LoginWithFaceIdActivity;
-import com.trust.home.security.utils.AppPrefsManager;
 
 public class SplashActivity extends BaseActivity {
 
@@ -39,9 +35,7 @@ public class SplashActivity extends BaseActivity {
     @Override
     protected void setupSplashScreen(SplashScreen splash) {
         splash.setOnExitAnimationListener(splashScreenViewProvider -> {
-            if(AppPrefsManager.getInstance().getUser() != null) {
-                pushActivityAndFinish(LoginWithFaceIdActivity.class);
-            } else pushActivityAndFinish(LoginActivity.class);
+            pushActivityAndFinish(LoginActivity.class);
         });
     }
 

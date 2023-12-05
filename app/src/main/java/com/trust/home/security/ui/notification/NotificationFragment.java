@@ -31,6 +31,12 @@ public class NotificationFragment extends BaseFragment<FragmentNotificationBindi
                 new Notification("Intrusion warning", "02:15:11 AM"),
                 new Notification("Face ID successfully", "10:15:11 AM"),
                 new Notification("Face ID successfully", "06:00:00 PM"),
+                new Notification("Face ID successfully", "08:30:10 AM"),
+                new Notification("Stay Home is On", "10:15:11 AM"),
+                new Notification("Arm is OFF", "11:15:11 AM"),
+                new Notification("Intrusion warning", "02:15:11 AM"),
+                new Notification("Face ID successfully", "10:15:11 AM"),
+                new Notification("Face ID successfully", "06:00:00 PM"),
                 new Notification("Face ID successfully", "08:30:10 AM")
         );
         mBinding.rvNotification.setAdapter(mAdapter);

@@ -9,6 +9,7 @@ import androidx.annotation.Nullable;
 
 import com.trust.home.security.base.BaseCustomView;
 import com.trust.home.security.databinding.LayoutUserToolbarBinding;
+import com.trust.home.security.utils.GlideUtils;
 
 public class UserToolBar extends BaseCustomView<LayoutUserToolbarBinding> {
     private ToolBarListener listener;
@@ -29,6 +30,10 @@ public class UserToolBar extends BaseCustomView<LayoutUserToolbarBinding> {
     @Override
     protected void initViews(Context context, AttributeSet attrs) {
 
+    }
+
+    public void updateAvatar(String avatar) {
+        GlideUtils.loadAvatar(mBinding.imAvatar, avatar);
     }
 
     @Override

@@ -5,9 +5,12 @@ import android.view.ViewGroup;
 
 import com.trust.home.security.base.BaseFragment;
 import com.trust.home.security.databinding.FragmentHomeBinding;
+import com.trust.home.security.etx.CollectEtxKt;
 import com.trust.home.security.network.data.response.HomeData;
 import com.trust.home.security.ui.profile.ProfileFragment;
 import com.trust.home.security.widgets.UserToolBar;
+
+import kotlin.Unit;
 
 public class HomeFragment extends BaseFragment<FragmentHomeBinding, HomePresenter, HomeView> implements HomeView {
     private HomeAdapter mAdapter;
@@ -35,6 +38,10 @@ public class HomeFragment extends BaseFragment<FragmentHomeBinding, HomePresente
                 new HomeData("Marvel House"),
                 new HomeData("Add a new house")
         );
+        CollectEtxKt.collectNotNull(this, mPresenter.userFlow(), user -> {
+            mBinding.toolbar.updateAvatar(user.getAvatar());
+            return Unit.INSTANCE;
+        });
     }
 
     @Override

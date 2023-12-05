@@ -5,7 +5,7 @@ import android.view.LayoutInflater;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
-import com.trust.home.security.base.BaseFragment;
+import com.trust.home.security.base.BaseCameraFragment;
 import com.trust.home.security.database.entity.User;
 import com.trust.home.security.databinding.FragmentRegisterFaceIdBinding;
 import com.trust.home.security.ui.main.MainActivity;
@@ -14,8 +14,9 @@ import com.trust.home.security.utils.CameraManager;
 import com.trust.home.security.utils.FacialRecognize;
 
 public class RegisterFaceIdFragment extends
-        BaseFragment<FragmentRegisterFaceIdBinding, RegisterFaceIdPresenter, RegisterFaceIdView> implements RegisterFaceIdView, CameraManager.CameraListener {
+        BaseCameraFragment<FragmentRegisterFaceIdBinding, RegisterFaceIdPresenter, RegisterFaceIdView> implements RegisterFaceIdView, CameraManager.CameraListener {
     private static final long DELAY_TIME = 5000;
+    private boolean isFinished = false;
     private final long now = System.currentTimeMillis();
 
     @Override
@@ -30,10 +31,6 @@ public class RegisterFaceIdFragment extends
 
     @Override
     protected void initViews() {
-        Toast.makeText(requireContext(), "Điều chỉnh khuôn mặt vào ô tròn", Toast.LENGTH_SHORT).show();
-        CameraManager.initialize(this, mBinding.camera);
-        CameraManager.getInstance().setListener(this);
-        CameraManager.getInstance().startCamera();
     }
 
     @Override
@@ -50,17 +47,26 @@ public class RegisterFaceIdFragment extends
 
     @Override
     public void onDetectFaceSuccess(Bitmap bitmap) {
+        if(isFinished) return;
         if (System.currentTimeMillis() - now > DELAY_TIME) {
+            isFinished = true;
             User user = AppPrefsManager.getInstance().getUser();
             FacialRecognize.getInstance(requireContext()).training(1, user.getUserName(), bitmap);
             Toast.makeText(requireContext(), "Training model successful", Toast.LENGTH_SHORT).show();
             pushActivityAndFinish(MainActivity.class);
-            getActivity().finish();
         }
     }
 
     @Override
     public void onDetectFaceFailure() {
 
+    }
+
+    @Override
+    protected void onPermissionGranted() {
+        Toast.makeText(requireContext(), "Điều chỉnh khuôn mặt vào ô tròn", Toast.LENGTH_SHORT).show();
+        CameraManager.initialize(this, mBinding.camera);
+        CameraManager.getInstance().setListener(this);
+        CameraManager.getInstance().startCamera();
     }
 }

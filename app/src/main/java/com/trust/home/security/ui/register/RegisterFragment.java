@@ -5,14 +5,12 @@ import android.view.LayoutInflater;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
-import com.tbruyelle.rxpermissions3.RxPermissions;
 import com.trust.home.security.base.BaseFragment;
 import com.trust.home.security.databinding.FragmentRegisterBinding;
 import com.trust.home.security.ui.registerFaceId.RegisterFaceIdFragment;
 import com.trust.home.security.utils.StringUtils;
 
 public class RegisterFragment extends BaseFragment<FragmentRegisterBinding, RegisterPresenter, RegisterView> implements RegisterView {
-    private RxPermissions permissions;
 
     @Override
     protected FragmentRegisterBinding binding(LayoutInflater inflater, ViewGroup container) {
@@ -26,7 +24,6 @@ public class RegisterFragment extends BaseFragment<FragmentRegisterBinding, Regi
 
     @Override
     protected void initViews() {
-        permissions = new RxPermissions(getActivity());
     }
 
     @Override
@@ -41,7 +38,7 @@ public class RegisterFragment extends BaseFragment<FragmentRegisterBinding, Regi
             }
         });
 
-        mBinding.appToolbar.setListener(this::onBackPressed);
+        mBinding.appToolbar.setStartIconListener(this::onBackPressed);
     }
 
     @Override
@@ -54,18 +51,10 @@ public class RegisterFragment extends BaseFragment<FragmentRegisterBinding, Regi
     public void onRegisterSuccess() {
         hideKeyboard();
         pushFragment(RegisterFaceIdFragment.newInstance(RegisterFaceIdFragment.class));
-//        permissions.request(Manifest.permission.CAMERA)
-//                .subscribeOn(Schedulers.io())
-//                .observeOn(AndroidSchedulers.mainThread())
-//                .subscribe(granted -> {
-//                    if(granted) {
-//                        pushFragment(RegisterRegisterFaceIdFragment.newInstance(RegisterRegisterFaceIdFragment.class));
-//                    } else Toast.makeText(requireContext(), "You need to grant Camera permission to enable the facial recognition feature.", Toast.LENGTH_LONG).show();
-//                });
     }
 
     @Override
     public void onRegisterFailure(String message) {
-        Toast.makeText(requireContext(), message, Toast.LENGTH_LONG).show();
+        showToast(message);
     }
 }

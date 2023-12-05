@@ -1,19 +1,21 @@
 <?xml version="1.0" encoding="utf-8"?>
 <com.google.android.material.card.MaterialCardView
     xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
+    android:theme="@style/Theme.MaterialComponents.Light.NoActionBar"
     android:clickable="true"
     android:focusable="true"
-    app:cardUseCompatPadding="true"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:backgroundTint="@color/color_0000005"
-    android:layout_marginTop="@dimen/_2sdp"
-    android:layout_marginHorizontal="@dimen/_4sdp">
+    app:cardUseCompatPadding="false"
+    app:cardElevation="0dp"
+    app:cardCornerRadius="0dp"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginTop="@dimen/_6sdp" >
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:background="@color/color_0000005"
         android:paddingHorizontal="@dimen/_12sdp"
         android:paddingVertical="@dimen/_8sdp">
         <androidx.appcompat.widget.AppCompatImageView
@@ -25,25 +27,29 @@
             android:src="@drawable/app_icon"/>
 
         <androidx.appcompat.widget.AppCompatTextView
-            android:id="@+id/tvName"
+            android:id="@+id/tvStatus"
+            tools:text="Stay Home is On"
+            android:textSize="@dimen/_12ssp"
             android:layout_marginStart="@dimen/_8sdp"
-            android:text="Home security"
-            android:textAllCaps="true"
+            android:textColor="@color/black"
+            android:fontFamily="@font/kanit_semi_bold"
             app:layout_constraintTop_toTopOf="@+id/imAppIcon"
             app:layout_constraintBottom_toBottomOf="@+id/imAppIcon"
-            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/imNext"
             app:layout_constraintStart_toEndOf="@+id/imAppIcon"
             android:layout_width="0dp"
             android:layout_height="wrap_content"/>
 
         <androidx.appcompat.widget.AppCompatTextView
-            android:id="@+id/tvStatus"
-            tools:text="Stay Home is On"
+            android:id="@+id/tvLocation"
+            tools:text="10:02:11 AM"
             android:textSize="@dimen/_12ssp"
             android:textColor="@color/black"
-            android:fontFamily="@font/kanit_semi_bold"
-            app:layout_constraintTop_toBottomOf="@+id/imAppIcon"
-            android:layout_width="match_parent"
+            android:fontFamily="@font/kanit_regular"
+            app:layout_constraintTop_toBottomOf="@+id/tvStatus"
+            app:layout_constraintStart_toStartOf="@+id/tvStatus"
+            app:layout_constraintEnd_toStartOf="@+id/imNext"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"/>
 
         <androidx.appcompat.widget.AppCompatTextView
@@ -52,8 +58,21 @@
             android:textSize="@dimen/_12ssp"
             android:textColor="@color/black"
             android:fontFamily="@font/kanit_regular"
-            app:layout_constraintTop_toBottomOf="@+id/tvStatus"
-            android:layout_width="match_parent"
+            app:layout_constraintTop_toBottomOf="@+id/tvLocation"
+            app:layout_constraintStart_toStartOf="@+id/tvStatus"
+            app:layout_constraintEnd_toStartOf="@+id/imNext"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"/>
+
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/imNext"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:layout_width="@dimen/_24sdp"
+            android:layout_height="@dimen/_24sdp"
+            android:padding="@dimen/_5sdp"
+            android:rotation="180"
+            android:src="@drawable/ic_back"/>
     </androidx.constraintlayout.widget.ConstraintLayout>
 </com.google.android.material.card.MaterialCardView>

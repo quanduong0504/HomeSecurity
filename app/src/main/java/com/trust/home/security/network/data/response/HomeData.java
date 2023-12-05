@@ -9,6 +9,12 @@ public class HomeData {
         this.name = name;
     }
 
+    public HomeData(String name, String createdAt, String location) {
+        this.name = name;
+        this.createdAt = createdAt;
+        this.location = location;
+    }
+
     public String getName() {
         return name;
     }

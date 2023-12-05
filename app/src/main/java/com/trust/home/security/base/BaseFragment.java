@@ -69,8 +69,20 @@ public abstract class BaseFragment<BD extends ViewBinding, P extends BasePresent
         super.onViewCreated(view, savedInstanceState);
         mPresenter = getPresenter();
         mPresenter.onAttach(attachView());
+        if(getView() != null) {
+            getView().setPadding(0, getStatusBarHeight(), 0, 0);
+        }
         initViews();
         initActions();
+    }
+
+    protected int getStatusBarHeight() {
+        int result = 0;
+        int resourceId = getResources().getIdentifier("status_bar_height", "dimen", "android");
+        if (resourceId > 0) {
+            result = getResources().getDimensionPixelSize(resourceId);
+        }
+        return result;
     }
 
     protected void pushFragment(Fragment fragment) {
@@ -93,6 +105,10 @@ public abstract class BaseFragment<BD extends ViewBinding, P extends BasePresent
     @Override
     public CreationExtras getDefaultViewModelCreationExtras() {
         return super.getDefaultViewModelCreationExtras();
+    }
+
+    protected void showToast(String message) {
+        baseActivity.showToast(message);
     }
 
     @Override

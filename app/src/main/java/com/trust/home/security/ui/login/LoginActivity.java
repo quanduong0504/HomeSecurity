@@ -15,10 +15,10 @@ import com.trust.home.security.R;
 import com.trust.home.security.base.BaseActivity;
 import com.trust.home.security.databinding.ActivityLoginBinding;
 import com.trust.home.security.helpers.events.LoginFaceSuccess;
-import com.trust.home.security.ui.loginWithFaceId.LoginWithFaceIdActivity;
+import com.trust.home.security.ui.loginWithFaceId.LoginWithFaceIdFragment;
 import com.trust.home.security.ui.register.RegisterFragment;
 import com.trust.home.security.ui.registerFaceId.RegisterFaceIdFragment;
-import com.trust.home.security.utils.PermissionUtils;
+import com.trust.home.security.utils.AppPrefsManager;
 import com.trust.home.security.utils.StringUtils;
 
 import org.greenrobot.eventbus.Subscribe;
@@ -45,7 +45,7 @@ public class LoginActivity extends BaseActivity<ActivityLoginBinding, LoginPrese
         registerEvents();
         mBinding.tvRegister.setMovementMethod(LinkMovementMethod.getInstance());
         mBinding.tvRegister.setText(getRegisterSpan());
-        PermissionUtils.requestPermission(this);
+        mPresenter.checkUserLoggedIn();
     }
 
     @Override
@@ -62,6 +62,7 @@ public class LoginActivity extends BaseActivity<ActivityLoginBinding, LoginPrese
 
     @Override
     public void goToRegisterFace() {
+        hideKeyboard();
         pushFragment(RegisterFaceIdFragment.newInstance(RegisterFaceIdFragment.class));
     }
 
@@ -94,7 +95,8 @@ public class LoginActivity extends BaseActivity<ActivityLoginBinding, LoginPrese
 
     @Override
     public void onLoginSuccess() {
-        pushActivity(LoginWithFaceIdActivity.class);
+        hideKeyboard();
+        pushFragment(LoginWithFaceIdFragment.newInstance(LoginWithFaceIdFragment.class));
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)

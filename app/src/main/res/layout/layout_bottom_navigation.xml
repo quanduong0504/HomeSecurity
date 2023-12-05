@@ -8,19 +8,21 @@
     android:paddingHorizontal="@dimen/_20sdp"
     android:paddingVertical="@dimen/_8sdp">
     <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/tvHome"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textSize="@dimen/_12ssp"
         android:fontFamily="@font/kanit_regular"
-        android:textColor="@color/black"
+        android:textColor="@color/item_selected"
         android:text="@string/home"/>
 
     <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/tvNotification"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textSize="@dimen/_12ssp"
         android:fontFamily="@font/kanit_regular"
-        android:textColor="@color/black"
+        android:textColor="@color/item_unselected"
         android:layout_marginStart="@dimen/_18sdp"
         android:text="@string/notification"/>
 </LinearLayout>

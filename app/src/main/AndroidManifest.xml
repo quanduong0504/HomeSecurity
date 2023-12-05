@@ -5,6 +5,16 @@
     <uses-feature android:name="android.hardware.camera" />
     <uses-permission android:name="android.permission.CAMERA" />
 
+    <queries>
+        <intent>
+            <action android:name="android.media.action.IMAGE_CAPTURE" />
+        </intent>
+        <intent>
+            <action android:name="android.intent.action.PICK" />
+            <data android:mimeType="image/*" />
+        </intent>
+    </queries>
+
     <application
         android:name=".HomeSecurityApplication"
         android:allowBackup="true"
@@ -34,9 +44,6 @@
         <meta-data
             android:name="com.appliedrec.verid.password"
             android:value="home.security" />
-
-        <activity android:name=".ui.registerFaceId.RegisterFaceIdFragment"/>
-        <activity android:name=".ui.loginWithFaceId.LoginWithFaceIdActivity"/>
 
 <!--        <activity-->
 <!--            android:name=".ui.main.MainActivity"-->

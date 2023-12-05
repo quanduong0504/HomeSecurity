@@ -33,9 +33,15 @@ class DatabaseJobViewModel(application: Application) : AndroidViewModel(applicat
         repository.insertUser(user)
     }
 
-    fun selectUserWhere(userName: String, doOnSuccess: (User?) -> Unit) = launchBackground {
-        repository.selectUserWhere(userName).launchMainThread(doOnSuccess)
+    fun updateUser(user: User) = launchBackground {
+        repository.updateUser(user)
     }
+
+    fun selectUserWhere(userName: String?, doOnSuccess: (User?) -> Unit) = launchBackground {
+        repository.selectUserWhere(userName ?: "").launchMainThread(doOnSuccess)
+    }
+
+    fun selectFlowUserWhere(userName: String?) = repository.selectFlowUserWhere(userName ?: "")
 
     fun selectUserWhere(userName: String, password: String, doOnSuccess: (User?) -> Unit) = launchBackground {
         repository.selectUserWhere(userName, password).launchMainThread(doOnSuccess)
@@ -43,12 +49,16 @@ class DatabaseJobViewModel(application: Application) : AndroidViewModel(applicat
 
     fun checkUserIsRegistered(userName: String, isRegistered: (Boolean) -> Unit) = launchBackground {
         val items = repository.selectUserWhere(userName)
-        isRegistered.invoke(items != null)
+        launchMainThread {
+            isRegistered.invoke(items != null)
+        }
     }
 
     fun checkUserIsRegisteredFace(userName: String, isRegistered: (Boolean) -> Unit) = launchBackground {
         val items = repository.selectFaceWhere(userName)
-        isRegistered.invoke(items != null)
+        launchMainThread {
+            isRegistered.invoke(items != null)
+        }
     }
 
     private fun launchBackground(doWork: suspend CoroutineScope.() -> Unit) {
